@@ -1,0 +1,7 @@
+{
+  "investmentAmount": 10000,
+  "holdings": {
+    "BTC": 10,
+    "ETH": 100
+  }
+}
