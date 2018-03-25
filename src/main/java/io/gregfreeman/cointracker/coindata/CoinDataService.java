@@ -18,10 +18,14 @@ public class CoinDataService
     {
         public String name;
         public String symbol;
-        public @SerializedName("price_usd") double priceUSD;
-        public @SerializedName("price_cad") double priceCAD;
-        public @SerializedName("price_btc") double priceBTC;
-        public @SerializedName("percent_change_24h") double percentChange24h;
+        @SerializedName("price_usd")
+        public double priceUSD;
+        @SerializedName("price_cad")
+        public double priceCAD;
+        @SerializedName("price_btc")
+        public double priceBTC;
+        @SerializedName("percent_change_24h")
+        public double percentChange24h;
 
         @Override
         public String toString()
