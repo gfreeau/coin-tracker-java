@@ -14,7 +14,7 @@ public class CoinDataService
 {
     final private static Gson gson = new Gson();
 
-    public class Coin
+    public static class Coin
     {
         public String name;
         public String symbol;
@@ -24,11 +24,11 @@ public class CoinDataService
         public @SerializedName("percent_change_24h") double percentChange24h;
 
         @Override
-        public String toString() {
+        public String toString()
+        {
             return gson.toJson(this);
         }
     }
-
 
     public static List<Coin> getCoinData(String currency, int limit) throws Exception
     {

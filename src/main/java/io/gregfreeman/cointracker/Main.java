@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Main {
-
+public class Main
+{
     public static void main(String[] args)
     {
         if (args.length == 0) {
@@ -99,10 +99,11 @@ public class Main {
         CWC_LongestLine cwc = new CWC_LongestLine();
         AsciiTable summaryTable = new AsciiTable();
         summaryTable.addRule();
-        summaryTable.addRow("Return", "CAD", "USD", "BTC", "ETH");
+        summaryTable.addRow("Return %", "Return", "CAD", "USD", "BTC", "ETH");
         summaryTable.addRule();
         summaryTable.addRow(
                 String.format("%.2f%%", CoinDataService.percentDiff(config.investmentAmount, totalCAD)),
+                String.format("$%.4f", totalCAD - config.investmentAmount),
                 String.format("$%.4f", totalCAD),
                 String.format("$%.4f", totalUSD),
                 String.format("%.4f", totalBTC),

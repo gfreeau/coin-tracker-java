@@ -10,13 +10,14 @@ public class ConfigParser
 {
     final private static Gson gson = new Gson();
 
-    public class Config
+    public static class Config
     {
         public double investmentAmount;
         public HashMap<String, Double> holdings;
 
         @Override
-        public String toString() {
+        public String toString()
+        {
             return gson.toJson(this);
         }
     }
