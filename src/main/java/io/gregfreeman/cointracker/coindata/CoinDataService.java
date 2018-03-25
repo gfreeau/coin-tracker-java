@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class CoinDataService
 {
-    final static Gson gson = new Gson();
+    final private static Gson gson = new Gson();
 
     public static List<Coin> getCoinData(String currency, int limit) throws Exception {
         String url = String.format("https://api.coinmarketcap.com/v1/ticker/?convert=%s&limit=%d", currency, limit);
@@ -22,13 +22,13 @@ public class CoinDataService
         return gson.fromJson(jsonText, coinListType);
     }
 
-    public static List<Coin> filterCoins(List<Coin> coins, HashMap<String, Float> portfolio) {
+    public static List<Coin> filterCoins(List<Coin> coins, HashMap<String, Double> portfolio) {
         return coins.stream()
                 .filter(coin -> portfolio.containsKey(coin.symbol))
                 .collect(Collectors.toList());
     }
 
-    public static float percentDiff(float from, float to) {
+    public static double percentDiff(double from, double to) {
         return ((to - from) / from) * 100;
     }
 }

@@ -7,7 +7,7 @@ import java.io.FileReader;
 
 public class ConfigParser
 {
-    final static Gson gson = new Gson();
+    final private static Gson gson = new Gson();
 
     public static Config getConfig(String configFilePath) throws Exception {
         JsonReader reader = new JsonReader(new FileReader(configFilePath));

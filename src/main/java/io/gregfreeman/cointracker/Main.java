@@ -8,6 +8,7 @@ import io.gregfreeman.cointracker.config.Config;
 import io.gregfreeman.cointracker.config.ConfigParser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -38,14 +39,14 @@ public class Main {
 
         coins = CoinDataService.filterCoins(coins, config.holdings);
 
-        float totalCAD = 0;
-        float totalUSD = 0;
-        float totalBTC = 0;
-        float totalETH = 0;
-        float ETHUSDPrice = 0;
+        double totalCAD = 0;
+        double totalUSD = 0;
+        double totalBTC = 0;
+        double totalETH = 0;
+        double ETHUSDPrice = 0;
 
         for (Coin coin : coins) {
-            float numberOfCoins = config.holdings.getOrDefault(coin.symbol, 0f);
+            double numberOfCoins = config.holdings.getOrDefault(coin.symbol, 0D);
 
             totalCAD += numberOfCoins * coin.priceCAD;
             totalUSD += numberOfCoins * coin.priceUSD;
@@ -60,29 +61,29 @@ public class Main {
             totalETH = totalUSD / ETHUSDPrice;
         }
 
-        List<String[]> rows = new ArrayList<String[]>();
+        List<List<String>> rows = new ArrayList<>();
 
         for (Coin coin : coins) {
-            float numberOfCoins = config.holdings.getOrDefault(coin.symbol, 0f);
+            double numberOfCoins = config.holdings.getOrDefault(coin.symbol, 0D);
 
-            float priceCAD = numberOfCoins * coin.priceCAD;
-            float priceUSD = numberOfCoins * coin.priceUSD;
+            double priceCAD = numberOfCoins * coin.priceCAD;
+            double priceUSD = numberOfCoins * coin.priceUSD;
 
-            float percentage = 0;
+            double percentage = 0;
 
             if (totalUSD > 0) {
                 percentage = priceUSD / totalUSD * 100;
             }
 
-            float priceETH = 0;
-            float coinPriceETH = 0;
+            double priceETH = 0;
+            double coinPriceETH = 0;
 
             if (ETHUSDPrice > 0) {
                 priceETH = priceUSD / ETHUSDPrice;
                 coinPriceETH = coin.priceUSD / ETHUSDPrice;
             }
 
-            rows.add(new String[]{
+            rows.add(Arrays.asList(
                     coin.symbol,
                     String.format("%.2f%%", percentage),
                     String.format("$%.4f", priceCAD),
@@ -91,7 +92,7 @@ public class Main {
                     String.format("$%.4f", coin.priceUSD),
                     String.format("%.4f", priceETH),
                     String.format("%.8f", coinPriceETH)
-            });
+            ));
         }
 
         CWC_LongestLine cwc = new CWC_LongestLine();
@@ -117,7 +118,7 @@ public class Main {
         table.addRule();
         table.addRow("Name", "Alloc", "CAD", "Price (CAD)", "USD", "Price (USD)", "ETH", "Price (ETH)");
         table.addRule();
-        for (String[] row : rows) {
+        for (List<String> row : rows) {
             table.addRow(row);
         }
         table.addRule();

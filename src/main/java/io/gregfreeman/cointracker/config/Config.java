@@ -1,14 +1,16 @@
 package io.gregfreeman.cointracker.config;
 
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 
 public class Config
 {
-    public float investmentAmount;
-    public HashMap<String, Float> holdings;
+    public double investmentAmount;
+    public HashMap<String, Double> holdings;
 
     @Override
     public String toString() {
-        return ConfigParser.gson.toJson(this);
+        return new Gson().toJson(this);
     }
 }
