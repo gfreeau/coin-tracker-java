@@ -6,7 +6,8 @@ import java.net.URL;
 
 class UrlReader
 {
-    static String readUrl(String urlString) throws Exception {
+    static String readUrl(String urlString) throws Exception
+    {
         BufferedReader reader = null;
 
         try {

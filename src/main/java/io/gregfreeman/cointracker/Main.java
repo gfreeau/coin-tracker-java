@@ -2,10 +2,10 @@ package io.gregfreeman.cointracker;
 
 import de.vandermeer.asciitable.AsciiTable;
 import de.vandermeer.asciitable.CWC_LongestLine;
-import io.gregfreeman.cointracker.coindata.Coin;
 import io.gregfreeman.cointracker.coindata.CoinDataService;
-import io.gregfreeman.cointracker.config.Config;
+import io.gregfreeman.cointracker.coindata.CoinDataService.Coin;
 import io.gregfreeman.cointracker.config.ConfigParser;
+import io.gregfreeman.cointracker.config.ConfigParser.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +13,8 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         if (args.length == 0) {
             System.out.println("Config file path is a required argument");
             System.exit(1);
