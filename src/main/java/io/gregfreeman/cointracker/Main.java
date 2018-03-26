@@ -29,22 +29,28 @@ public class Main
             System.exit(1);
         }
 
-        List<Coin> coins = null;
+        List<Coin> allCoins = null;
 
         try {
-            coins = CoinDataService.getCoinData("cad", 150);
+            allCoins = CoinDataService.getCoinData("cad", 150);
         } catch (Exception e) {
             System.out.println("Coin data is unavailable");
             System.exit(1);
         }
 
-        coins = CoinDataService.filterCoins(coins, config.holdings);
+        List<Coin> coins = CoinDataService.filterCoins(allCoins, config.holdings);
 
         double totalCAD = 0;
         double totalUSD = 0;
         double totalBTC = 0;
         double totalETH = 0;
-        double ETHUSDPrice = 0;
+        double ETHBTCPrice = 0;
+
+        Coin ETH = CoinDataService.findCoin("ETH", allCoins);
+
+        if (ETH != null) {
+            ETHBTCPrice = ETH.priceBTC;
+        }
 
         for (Coin coin : coins) {
             double numberOfCoins = config.holdings.getOrDefault(coin.symbol, 0D);
@@ -52,14 +58,10 @@ public class Main
             totalCAD += numberOfCoins * coin.priceCAD;
             totalUSD += numberOfCoins * coin.priceUSD;
             totalBTC += numberOfCoins * coin.priceBTC;
-
-            if (coin.symbol.equals("ETH")) {
-                ETHUSDPrice = coin.priceUSD;
-            }
         }
 
-        if (ETHUSDPrice > 0) {
-            totalETH = totalUSD / ETHUSDPrice;
+        if (ETHBTCPrice > 0) {
+            totalETH = totalBTC / ETHBTCPrice;
         }
 
         List<List<String>> rows = new ArrayList<>();
@@ -69,6 +71,7 @@ public class Main
 
             double priceCAD = numberOfCoins * coin.priceCAD;
             double priceUSD = numberOfCoins * coin.priceUSD;
+            double priceBTC = numberOfCoins * coin.priceBTC;
 
             double percentage = 0;
 
@@ -79,9 +82,9 @@ public class Main
             double priceETH = 0;
             double coinPriceETH = 0;
 
-            if (ETHUSDPrice > 0) {
-                priceETH = priceUSD / ETHUSDPrice;
-                coinPriceETH = coin.priceUSD / ETHUSDPrice;
+            if (ETHBTCPrice > 0) {
+                priceETH = priceBTC / ETHBTCPrice;
+                coinPriceETH = coin.priceBTC / ETHBTCPrice;
             }
 
             rows.add(Arrays.asList(
@@ -92,22 +95,24 @@ public class Main
                     String.format("$%.4f", priceUSD),
                     String.format("$%.4f", coin.priceUSD),
                     String.format("%.4f", priceETH),
-                    String.format("%.8f", coinPriceETH)
+                    String.format("%.8f", coinPriceETH),
+                    String.format("%.4f", priceBTC),
+                    String.format("%.8f", coin.priceBTC)
             ));
         }
 
         CWC_LongestLine cwc = new CWC_LongestLine();
         AsciiTable summaryTable = new AsciiTable();
         summaryTable.addRule();
-        summaryTable.addRow("Return %", "Return", "CAD", "USD", "BTC", "ETH");
+        summaryTable.addRow("Return %", "Return", "CAD", "USD", "ETH", "BTC");
         summaryTable.addRule();
         summaryTable.addRow(
                 String.format("%.2f%%", CoinDataService.percentDiff(config.investmentAmount, totalCAD)),
                 String.format("$%.4f", totalCAD - config.investmentAmount),
                 String.format("$%.4f", totalCAD),
                 String.format("$%.4f", totalUSD),
-                String.format("%.4f", totalBTC),
-                String.format("%.4f", totalETH)
+                String.format("%.4f", totalETH),
+                String.format("%.4f", totalBTC)
         );
         summaryTable.addRule();
 
@@ -118,7 +123,7 @@ public class Main
 
         AsciiTable table = new AsciiTable();
         table.addRule();
-        table.addRow("Name", "Alloc", "CAD", "Price (CAD)", "USD", "Price (USD)", "ETH", "Price (ETH)");
+        table.addRow("Name", "Alloc", "CAD", "Price (CAD)", "USD", "Price (USD)", "ETH", "Price (ETH)", "BTC", "Price (BTC)");
         table.addRule();
         for (List<String> row : rows) {
             table.addRow(row);

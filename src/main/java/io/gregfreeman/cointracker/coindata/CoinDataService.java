@@ -51,6 +51,14 @@ public class CoinDataService
                 .collect(Collectors.toList());
     }
 
+    public static Coin findCoin(String symbol, List<Coin> coins)
+    {
+        return coins.stream()
+                .filter(coin -> coin.symbol.equals(symbol))
+                .findFirst()
+                .orElse(null);
+    }
+
     public static double percentDiff(double from, double to)
     {
         return ((to - from) / from) * 100;
