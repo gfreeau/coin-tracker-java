@@ -12,6 +12,7 @@ public class ConfigParser
 
     public static class Config
     {
+        public int topCoinLimit = 100;
         public double investmentAmount;
         public HashMap<String, Double> holdings;
 

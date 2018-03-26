@@ -32,7 +32,7 @@ public class Main
         List<Coin> allCoins = null;
 
         try {
-            allCoins = CoinDataService.getCoinData("cad", 150);
+            allCoins = CoinDataService.getCoinData("cad", config.topCoinLimit);
         } catch (Exception e) {
             System.out.println("Coin data is unavailable");
             System.exit(1);
